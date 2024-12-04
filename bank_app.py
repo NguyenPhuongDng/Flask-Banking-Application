@@ -27,7 +27,8 @@ def index():
     else:
         form_inputs = pd.DataFrame(request.form.to_dict(), index=[0])
         prediction = model.predict(form_inputs.astype(float))
-        return str(prediction)  # form_inputs.to_html(),
+        result = "Default" if prediction[0] == 1 else "No Default"
+        return result
 
 
 if __name__ == "__main__":
