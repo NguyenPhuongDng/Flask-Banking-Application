@@ -15,7 +15,7 @@
             margin: 0;
         }
         h1 {
-            color: rgb(0, 170, 255);
+            color: rgb(0, 132, 255);
             text-align: center;
             margin-bottom: 20px;
         }
@@ -29,14 +29,18 @@
             flex-direction: column;
             align-items: center;
         }
-        label, input[type="text"] {
-            width: 100%;
-            margin: 10px 0;
+        label {
+            display: none;
         }
         input[type="text"] {
+            width: 100%;
             padding: 10px;
+            margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 4px;
+        }
+        input[type="text"]::placeholder {
+            color: rgb(108, 8, 148);
         }
         input[type="submit"] {
             background-color: #4CAF50;
@@ -56,16 +60,11 @@
     <div>
         <h1>Bank Application</h1>
         <form method="POST">
-            <label for="employ" style="color:rgb(108, 8, 148)">Employ:</label>
-            <input type="text" id="employ" name="employ">
-            <label for="creddebt" style="color:rgb(108, 8, 148)">Creddebt:</label>
-            <input type="text" id="creddebt" name="creddebt">
-            <label for="debtinc" style="color:rgb(108, 8, 148)">Debtinc:</label>
-            <input type="text" id="debtinc" name="debtinc">
-            <label for="income" style="color:rgb(108, 8, 148)">Income:</label>
-            <input type="text" id="income" name="income">
-            <label for="othdebt" style="color:rgb(108, 8, 148)">Othdebt:</label>
-            <input type="text" id="othdebt" name="othdebt">
+            <input type="text" id="employ" name="employ" placeholder="Employ">
+            <input type="text" id="creddebt" name="creddebt" placeholder="Creddebt">
+            <input type="text" id="debtinc" name="debtinc" placeholder="Debtinc">
+            <input type="text" id="income" name="income" placeholder="Income">
+            <input type="text" id="othdebt" name="othdebt" placeholder="Othdebt">
             <input type="submit">
         </form>
     </div>
