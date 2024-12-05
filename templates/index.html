@@ -1,10 +1,73 @@
-<title>Bank Application</title>
-
-<form method="POST">
-    employ: <input type="text" name="employ"> <br><br>
-    creddebt: <input type="text" name="creddebt"> <br><br>
-    debtinc: <input type="text" name="debtinc"> <br><br>
-    income: <input type="text" name="income"> <br><br>
-    othdebt: <input type="text" name="othdebt"> <br><br><br>
-    <input type="submit">
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: rgb(0, 170, 255);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label, input[type="text"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Bank Application</h1>
+        <form method="POST">
+            <label for="employ" style="color:rgb(108, 8, 148)">Employ:</label>
+            <input type="text" id="employ" name="employ">
+            <label for="creddebt" style="color:rgb(108, 8, 148)">Creddebt:</label>
+            <input type="text" id="creddebt" name="creddebt">
+            <label for="debtinc" style="color:rgb(108, 8, 148)">Debtinc:</label>
+            <input type="text" id="debtinc" name="debtinc">
+            <label for="income" style="color:rgb(108, 8, 148)">Income:</label>
+            <input type="text" id="income" name="income">
+            <label for="othdebt" style="color:rgb(108, 8, 148)">Othdebt:</label>
+            <input type="text" id="othdebt" name="othdebt">
+            <input type="submit">
+        </form>
+    </div>
+</body>
+</html>
