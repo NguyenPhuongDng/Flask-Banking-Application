@@ -9,7 +9,7 @@ import pickle
 import pandas as pd
 from flask import Flask, render_template, request
 
-with open("RF_model_Banking_Application.pkl", "rb") as source:
+with open("SVM_model_Banking_Application.pkl", "rb") as source:
     model = pickle.load(source)
 
 app = Flask(__name__)
