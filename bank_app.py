@@ -2,7 +2,7 @@
 This is a Banking Application to predict wherether any new person
 seeking loans will default or NOT. This app takes the following
 inputs to predict the result:
-'income', 'debtinc', 'othdebt', 'employ', 'creddebt'
+['income', 'othdebt', 'debtinc', 'creddebt', 'employ']
 """
 
 import pickle
@@ -21,11 +21,15 @@ def index():
     Defining the actions based on the "GET" and "POST" requests
     in the index.html
     """
+
+    col = ['income', 'othdebt', 'debtinc', 'creddebt', 'employ']
     if request.method == "GET":
         return render_template("index.html")
 
     else:
-        form_inputs = pd.DataFrame(request.form.to_dict(), index=[0])
+        input = request.form.to_dict()
+        input_data = {key: float(input[key]) for key in col}
+        form_inputs = pd.DataFrame(input_data, index=[0])
         prediction = model.predict(form_inputs.astype(float))
         result = "Default" if prediction[0] == 1 else "No Default"
         return result
