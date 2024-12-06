@@ -4,18 +4,15 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 
-# Load the model
 with open("SVM_model_Banking_Application.pkl", "rb") as source:
     model = pickle.load(source)
 
 app = Flask(__name__)
 
-# Configure SQLite database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bank_app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# Define the database model
 class Application(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     employ = db.Column(db.Float, nullable=False)
@@ -25,7 +22,7 @@ class Application(db.Model):
     othdebt = db.Column(db.Float, nullable=False)
     result = db.Column(db.String(50), nullable=False)
 
-# Create the database and the table
+
 with app.app_context():
     db.create_all()
 
