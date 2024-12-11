@@ -25,7 +25,7 @@ This is a simple banking application built using **Flask** and **SQLite**. The a
 
    ```bash
    https://github.com/NguyenPhuongDng/Flask-Banking-Application.git
-2. Run `**bank_app.py**`
+2. Run `bank_app.py`
 3. Access the link : http://127.0.0.1:5000 to enter application web interface
 4. Access the link : http://127.0.0.1:5000/view_table/Application  to enter SQLite web interface
 
