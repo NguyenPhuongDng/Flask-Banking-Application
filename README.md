@@ -9,14 +9,13 @@ This is a simple banking application built using **Flask** and **SQLite**. The a
 
 - Predict whether a user will default on a loan based on financial information.
 - Store user input data and prediction results in a SQLite database.
-- View stored data directly from the database via a simple web interface.
+- View stored data directly from the database through a simple web interface.
 - Error handling for invalid input data.
 
 ## Requirements
 
-- Python 3.x
+- Python
 - Flask
-- SQLAlchemy
 - scikit-learn (for the SVM model)
 - SQLite
 
@@ -25,5 +24,8 @@ This is a simple banking application built using **Flask** and **SQLite**. The a
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/Flask-Banking-Application.git
+   https://github.com/NguyenPhuongDng/Flask-Banking-Application.git
+2. Run bank_app.py
+3. Access the link : http://127.0.0.1:5000 to enter application web interface
+4. Access the link : http://127.0.0.1:5000/view_table/Application  to enter SQLite web interface
 
