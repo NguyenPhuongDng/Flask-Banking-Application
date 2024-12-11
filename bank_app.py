@@ -37,7 +37,11 @@ def index():
         return render_template("index.html")
     else:
         input = request.form.to_dict()
-        input_data = {key: float(input[key]) for key in col}
+        try:
+            input_data = {key: float(input[key]) for key in col}
+        except ValueError:
+            return render_template("error.html")
+        
         form_inputs = pd.DataFrame(input_data, index=[0])
         prediction = model.predict(form_inputs.astype(float))
         result = "Default" if prediction[0] == 1 else "No Default"
@@ -53,7 +57,7 @@ def index():
         db.session.add(new_application)
         db.session.commit()
 
-        return result
+        return render_template("result.html", result=result)
 
 @app.route("/check_db")
 def check_db():
@@ -66,5 +70,14 @@ def check_db():
         return f"Kết nối thành công, số bảng là: {num_tables}"
     except Exception as e:
         return f"Lỗi kết nối: {e}"
+    
+@app.route("/view_table/<table_name>")
+def view_table(table_name):
+    try:
+        result = db.session.execute(text(f"SELECT * FROM {table_name}"))
+        data = [dict(row) for row in result]
+        return {"table_name": table_name, "data": data}
+    except Exception as e:
+        return f"Lỗi: {e}"
 if __name__ == "__main__":
     app.run(debug=True)
