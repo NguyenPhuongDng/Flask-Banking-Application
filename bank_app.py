@@ -15,6 +15,8 @@ db = SQLAlchemy(app)
 
 class Application(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.string, nullable=False)
+    age = db.Column(db.int, nullable=True)
     employ = db.Column(db.Float, nullable=False)
     creddebt = db.Column(db.Float, nullable=False)
     debtinc = db.Column(db.Float, nullable=False)
