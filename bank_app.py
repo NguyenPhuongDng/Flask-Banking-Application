@@ -15,8 +15,8 @@ db = SQLAlchemy(app)
 
 class Application(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.string, nullable=False)
-    age = db.Column(db.int, nullable=True)
+    name = db.Column(db.String(100), nullable=False)
+    age = db.Column(db.Integer, nullable=True)
     employ = db.Column(db.Float, nullable=False)
     creddebt = db.Column(db.Float, nullable=False)
     debtinc = db.Column(db.Float, nullable=False)
@@ -40,6 +40,8 @@ def index():
     else:
         input = request.form.to_dict()
         try:
+            name = input.get("name")
+            age = int(input.get("age", 0)) if input.get("age") else None
             input_data = {key: float(input[key]) for key in col}
         except ValueError:
             return render_template("error.html")
@@ -48,16 +50,20 @@ def index():
         prediction = model.predict(form_inputs.astype(float))
         result = "Default" if prediction[0] == 1 else "No Default"
 
-        new_application = Application(
-            employ=form_inputs['employ'][0],
-            creddebt=form_inputs['creddebt'][0],
-            debtinc=form_inputs['debtinc'][0],
-            income=form_inputs['income'][0],
-            othdebt=form_inputs['othdebt'][0],
-            result=result
-        )
-        db.session.add(new_application)
-        db.session.commit()
+        try:
+            new_application = Application(
+                name=name,
+                age=age,
+                employ=form_inputs['employ'][0],
+                creddebt=form_inputs['creddebt'][0],
+                debtinc=form_inputs['debtinc'][0],
+                income=form_inputs['income'][0],
+                othdebt=form_inputs['othdebt'][0],
+                result=result
+            )
+            db.session.add(new_application)
+            db.session.commit()
+        except: return render_template("error.html")
 
         return render_template("result.html", result=result)
 
@@ -75,11 +81,17 @@ def check_db():
     
 @app.route("/view_table/<table_name>")
 def view_table(table_name):
+    # access http://127.0.0.1:5000/view_table/Application 
     try:
+        # Thực hiện truy vấn
         result = db.session.execute(text(f"SELECT * FROM {table_name}"))
-        data = [dict(row) for row in result]
-        return {"table_name": table_name, "data": data}
+        # Lấy danh sách cột từ kết quả
+        columns = result.keys()
+        # Chuyển đổi kết quả truy vấn thành danh sách dictionary
+        data = [dict(zip(columns, row)) for row in result]
+        return render_template("view_table.html", table_name=table_name, data=data)
     except Exception as e:
         return f"Lỗi: {e}"
+    
 if __name__ == "__main__":
     app.run(debug=True)
