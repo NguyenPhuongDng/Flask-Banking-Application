@@ -3,6 +3,7 @@ import pandas as pd
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
+from spark_funcion import get_analytics_data
 
 with open("SVM_model_Banking_Application.pkl", "rb") as source:
     model = pickle.load(source)
@@ -92,6 +93,14 @@ def view_table(table_name):
         return render_template("view_table.html", table_name=table_name, data=data)
     except Exception as e:
         return f"Lỗi: {e}"
+    
+@app.route("/analysis")
+def analytics():
+    db_path = "instance/bank_app.db"
+    table_name = "Application"
+    data = get_analytics_data(db_path, table_name)
+
+    return render_template("analytics.html", data=data)
     
 if __name__ == "__main__":
     app.run(debug=True)

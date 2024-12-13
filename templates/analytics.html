@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analytics</title>
+</head>
+<body>
+    <h1>Banking Analytics</h1>
+    <h2>Total Applications: {{ data.total_applications }}</h2>
+
+    <h3>Default Rate</h3>
+    <table border="1">
+        <tr>
+            <th>Result</th>
+            <th>Count</th>
+            <th>Percentage</th>
+        </tr>
+        {% for row in data.default_rate %}
+        <tr>
+            <td>{{ row.result }}</td>
+            <td>{{ row.count }}</td>
+            <td>{{ row.percentage }}%</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Age Group Distribution</h3>
+    <table border="1">
+        <tr>
+            <th>Age Group</th>
+            <th>Count</th>
+        </tr>
+        {% for row in data.age_group %}
+        <tr>
+            <td>{{ row.age_group }}</td>
+            <td>{{ row.count }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
