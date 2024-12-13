@@ -46,6 +46,44 @@ def get_age_group_distribution(application_df):
     """)
     return result.collect()
 
+def get_income_group_distribution(application_df):
+    application_df.createOrReplaceTempView("Application")
+    result = spark.sql("""
+        SELECT 
+            CASE 
+                WHEN income <= 10 THEN '0-10'
+                WHEN income <= 40 THEN '11-40'
+                WHEN income <= 60 THEN '41-60'
+                WHEN income <= 80 THEN '61-80'
+                WHEN income <= 99 THEN '81-99'
+                ELSE '100+' 
+            END AS income_group,
+            COUNT(*) AS count
+        FROM Application
+        GROUP BY income_group
+        ORDER BY income_group
+    """)
+    return result.collect()
+
+def get_debtinc_group_distribution(application_df):
+    application_df.createOrReplaceTempView("Application")
+    result = spark.sql("""
+        SELECT 
+            CASE 
+                WHEN debtinc <= 10 THEN '0-10'
+                WHEN debtinc <= 40 THEN '11-40'
+                WHEN debtinc <= 60 THEN '41-60'
+                WHEN debtinc <= 80 THEN '61-80'
+                WHEN debtinc <= 99 THEN '81-99'
+                ELSE '100+' 
+            END AS debtinc_group,
+            COUNT(*) AS count
+        FROM Application
+        GROUP BY debtinc_group
+        ORDER BY debtinc_group
+    """)
+    return result.collect()
+
 # Tính tổng số khách hàng
 def get_total_applications(application_df):
     application_df.createOrReplaceTempView("Application")
@@ -61,6 +99,12 @@ def get_analytics_data(db_path, table_name):
     
     # Phân nhóm tuổi
     age_group = get_age_group_distribution(application_df)
+
+    # Phân nhóm doanh thu
+    income_group = get_income_group_distribution(application_df)
+    
+    # Phân nhóm khoản nợ
+    debtinc_group = get_debtinc_group_distribution(application_df)
     
     # Tổng số khách hàng
     total_applications = get_total_applications(application_df)
@@ -69,5 +113,7 @@ def get_analytics_data(db_path, table_name):
     return {
         "default_rate": [row.asDict() for row in default_rate],
         "age_group": [row.asDict() for row in age_group],
+        "income_group": [row.asDict() for row in income_group],
+        "debtinc_group": [row.asDict() for row in debtinc_group],
         "total_applications": total_applications
     }

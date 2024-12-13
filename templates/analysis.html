@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Banking Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f6f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        h3 {
+            color: #34495e;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .summary {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            width: 100%;
+            margin-bottom: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+
+        .table-container {
+            margin-bottom: 30px;
+        }
+
+        .back-button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+
+        .chart {
+            max-width: 100%;
+        }
+
+        .data-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .data-table, .data-table th, .data-table td {
+            border: 1px solid #ddd;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .data-table th {
+            background-color: #f2f2f2;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Banking Analytics</h1>
+
+        <a href="javascript:history.back()" class="back-button">Quay lại</a>
+
+        <div class="summary">
+            <h2>Total Applications: {{ data.total_applications }}</h2>
+        </div>
+
+        <!-- Default Rate Chart -->
+        <div class="chart-container">
+            <h3>Default Rate</h3>
+            <canvas id="defaultRateChart" class="chart"></canvas>
+            <table class="data-table">
+                <tr>
+                    <th>Result</th>
+                    <th>Count</th>
+                    <th>Percentage</th>
+                </tr>
+                {% for row in data.default_rate %}
+                <tr>
+                    <td>{{ row.result }}</td>
+                    <td>{{ row.count }}</td>
+                    <td>{{ row.percentage }}%</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- Age Group Distribution Chart -->
+        <div class="chart-container">
+            <h3>Age Group Distribution</h3>
+            <canvas id="ageGroupChart" class="chart"></canvas>
+            <table class="data-table">
+                <tr>
+                    <th>Age Group</th>
+                    <th>Count</th>
+                </tr>
+                {% for row in data.age_group %}
+                <tr>
+                    <td>{{ row.age_group }}</td>
+                    <td>{{ row.count }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- Income Group Distribution Chart -->
+        <div class="chart-container">
+            <h3>Income Group Distribution</h3>
+            <canvas id="incomeGroupChart" class="chart"></canvas>
+            <table class="data-table">
+                <tr>
+                    <th>Income Group</th>
+                    <th>Count</th>
+                </tr>
+                {% for row in data.income_group %}
+                <tr>
+                    <td>{{ row.income_group }}</td>
+                    <td>{{ row.count }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- Debt Income Group Distribution Chart -->
+        <div class="chart-container">
+            <h3>Debt Income Group Distribution</h3>
+            <canvas id="debtIncomeGroupChart" class="chart"></canvas>
+            <table class="data-table">
+                <tr>
+                    <th>Debt Income Group</th>
+                    <th>Count</th>
+                </tr>
+                {% for row in data.debtinc_group %}
+                <tr>
+                    <td>{{ row.debtinc_group }}</td>
+                    <td>{{ row.count }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Default Rate Chart
+        var defaultRateData = {{ data.default_rate | tojson }};
+        var defaultRateLabels = defaultRateData.map(row => row.result);
+        var defaultRateCounts = defaultRateData.map(row => row.count);
+
+        var defaultRateChart = new Chart(document.getElementById("defaultRateChart"), {
+            type: 'pie',
+            data: {
+                labels: defaultRateLabels,
+                datasets: [{
+                    label: 'Default Rate',
+                    data: defaultRateCounts,
+                    backgroundColor: ['#e74c3c', '#2ecc71'],
+                    borderColor: ['#c0392b', '#27ae60'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                var value = tooltipItem.raw;
+                                return tooltipItem.label + ': ' + value + ' (' + (value * 100 / defaultRateCounts.reduce((a, b) => a + b)).toFixed(2) + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Age Group Distribution Chart
+        var ageGroupData = {{ data.age_group | tojson }};
+        var ageGroupLabels = ageGroupData.map(row => row.age_group);
+        var ageGroupCounts = ageGroupData.map(row => row.count);
+
+        var ageGroupChart = new Chart(document.getElementById("ageGroupChart"), {
+            type: 'bar',
+            data: {
+                labels: ageGroupLabels,
+                datasets: [{
+                    label: 'Age Group Distribution',
+                    data: ageGroupCounts,
+                    backgroundColor: '#3498db',
+                    borderColor: '#2980b9',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + ' customers';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Income Group Distribution Chart
+        var incomeGroupData = {{ data.income_group | tojson }};
+        var incomeGroupLabels = incomeGroupData.map(row => row.income_group);
+        var incomeGroupCounts = incomeGroupData.map(row => row.count);
+
+        var incomeGroupChart = new Chart(document.getElementById("incomeGroupChart"), {
+            type: 'bar',
+            data: {
+                labels: incomeGroupLabels,
+                datasets: [{
+                    label: 'Income Group Distribution',
+                    data: incomeGroupCounts,
+                    backgroundColor: '#2ecc71',
+                    borderColor: '#27ae60',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + ' customers';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Debt Income Group Distribution Chart
+        var debtIncomeGroupData = {{ data.debtinc_group | tojson }};
+        var debtIncomeGroupLabels = debtIncomeGroupData.map(row => row.debtinc_group);
+        var debtIncomeGroupCounts = debtIncomeGroupData.map(row => row.count);
+
+        var debtIncomeGroupChart = new Chart(document.getElementById("debtIncomeGroupChart"), {
+            type: 'bar',
+            data: {
+                labels: debtIncomeGroupLabels,
+                datasets: [{
+                    label: 'Debt Income Group Distribution',
+                    data: debtIncomeGroupCounts,
+                    backgroundColor: '#f39c12',
+                    borderColor: '#e67e22',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + ' customers';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

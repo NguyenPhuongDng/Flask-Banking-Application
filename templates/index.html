@@ -13,6 +13,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            position: relative; /* Thêm để căn chỉnh các phần tử bên trong */
         }
         h1 {
             color: rgb(0, 132, 255);
@@ -50,9 +51,37 @@
             border-radius: 4px;
             cursor: pointer;
             margin-top: 20px;
+            transition: background-color 0.3s ease;
         }
         input[type="submit"]:hover {
             background-color: #45a049;
+        }
+        /* Nút đẹp hơn */
+        .button-container {
+            position: fixed;
+            bottom: 20px; /* Đặt các nút ở góc dưới */
+            right: 20px; /* Đặt các nút ở góc phải */
+            display: flex;
+            flex-direction: column; /* Sắp xếp các nút theo chiều dọc */
+            gap: 10px; /* Tạo khoảng cách giữa các nút */
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05); /* Hiệu ứng phóng to khi hover */
+        }
+        button:active {
+            background-color: #004085;
+            transform: scale(1);
         }
     </style>
 </head>
@@ -70,6 +99,11 @@
             <input type="text" id="othdebt" name="othdebt" placeholder="Othdebt">
             <input type="submit">
         </form>
+        <!-- Các nút chuyển hướng -->
+        <div class="button-container">
+            <button onclick="window.location.href='analysis'">Data Analytics</button>
+            <button onclick="window.location.href='view_table/Application'">View Data Table</button>
+        </div>
     </div>
 </body>
 </html>

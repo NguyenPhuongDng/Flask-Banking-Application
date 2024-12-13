@@ -100,7 +100,7 @@ def analytics():
     table_name = "Application"
     data = get_analytics_data(db_path, table_name)
 
-    return render_template("analytics.html", data=data)
+    return render_template("analysis.html", data=data)
     
 if __name__ == "__main__":
     app.run(debug=True)
