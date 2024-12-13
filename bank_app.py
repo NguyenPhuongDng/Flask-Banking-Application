@@ -48,7 +48,7 @@ def index():
         
         form_inputs = pd.DataFrame(input_data, index=[0])
         prediction = model.predict(form_inputs.astype(float))
-        result = "Default" if prediction[0] == 1 else "No Default"
+        result = "Default" if prediction == 1 else "No Default"
 
         try:
             new_application = Application(
